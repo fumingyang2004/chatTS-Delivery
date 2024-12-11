@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>背景设置示例</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden; /* 取消滚动条 */
+            background-image: url('imgs/dbg.png'); /* 直接设置为 select_bg.png */
+            background-size: cover; /* 让 select_bg.png 始终铺满整个页面 */
+            background-position: center; /* 将 select_bg.png 居中 */
+            background-repeat: no-repeat; /* 添加 no-repeat 设置 */
+            display: flex; /* 使用 Flexbox 布局 */
+            position: relative; /* 设置相对定位，便于子元素绝对定位 */
+        }
+
+        .bg-animation {
+            position: absolute; /* 使背景图层绝对定位 */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0; /* 使图层充满整个页面 */
+            background-image: url('imgs/bg2.png'); /* 仅对这两个图像应用动画 */
+            background-size: cover; /* 让背景图像始终铺满整个页面 */
+            background-position: center; /* 将背景图像居中 */
+            background-repeat: no-repeat; /* 添加 no-repeat 设置 */
+            animation: bgExpand1 10s infinite alternate; /* 对 bg1 应用背景动画 */
+            z-index: -1; /* 确保该图层在内容下方 */
+        }
+
+        .bg-d {
+            position: absolute; /* 绝对定位 */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0; /* 使图层充满整个页面 */
+            background-image: url('imgs/bg_d.png'); /* 设置静态背景图 */
+            background-size: cover; /* 让背景图像始终铺满整个页面 */
+            background-position: center; /* 将背景图像居中 */
+            background-repeat: no-repeat; /* 添加 no-repeat 设置 */
+            z-index: -1; /* 确保该图层在内容下方 */
+            animation: expand-shrink 10s infinite, swing 15s infinite ease-in-out; /* 添加膨胀收缩和摇摆动画 */
+        }
+
+        @keyframes swing {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(0.5deg); } /* 小幅度摇摆 */
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-0.5deg); } /* 小幅度摇摆 */
+            100% { transform: rotate(0deg); }
+        }
+        
+        @keyframes expand-shrink {
+            0%, 100% {
+                transform: scale(1); /* 初始状态和结束状态为原大小 */
+            }
+            50% {
+                transform: scale(1.02); /* 到达中间时膨胀2% */
+            }
+        }
+
+        @keyframes bgExpand1 {
+            0% { background-size: 100%; }
+            50% { background-size: 105%; } /* 背景图片膨胀 */
+            100% { background-size: 100%; }
+        }
+
+        .bg-animation::after {
+            content: ""; /* 生成伪元素 */
+            background-image: url('imgs/bg1.png'); /* 将 bg2 背景设置为伪元素 */
+            background-size: cover; /* 让背景图像始终铺满整个页面 */
+            background-position: center; /* 将背景图像居中 */
+            background-repeat: no-repeat; /* 添加 no-repeat 设置 */
+            position: absolute; /* 绝对定位 */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0; /* 使伪元素充满整个页面 */
+            animation: bgExpand2 10s infinite alternate; /* 对 bg2 应用背景动画 */
+            animation-delay: 1s; /* 延迟 1 秒 */
+            z-index: -1; /* 确保该图层在内容下方 */
+        }
+
+        /* 定义旋转动画 */
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg); /* 初始状态 */
+            }
+            100% {
+                transform: rotate(360deg); /* 旋转360度 */
+            }
+        }
+        
+        .content {
+            color: white; /* 设置内容颜色为白色 */
+            text-align: center; /* 内容居中 */
+            padding-top: 20%; /* 从顶部开始留出空间 */
+            flex: 1; /* 让内容容器占据剩余空间 */
+            position: relative; /* 相对定位，以便子元素正确定位 */
+            z-index: 2; /* 确保内容在其他元素之上 */
+        }
+
+        .side-container {
+            width: 82vw; /* 设置右侧容器的宽度 */
+            background-image: url('imgs/Delivery_bg.png'); /* 添加右侧容器的背景图像 */
+            background-size: contain; /* 背景图像覆盖容器 */
+            background-position: center; /* 背景图像居中 */
+            background-repeat: no-repeat; /* 添加 no-repeat 设置 */
+            display: flex; /* 使用 Flexbox 布局 */
+            justify-content: center; /* 内容水平居中 */
+            align-items: center; /* 内容垂直居中 */
+            padding: 20px; /* 内边距 */
+            height: 100vh; /* 设置容器高度为100%视口高度 */
+            position: fixed; /* 使用固定定位，使容器固定在右侧 */
+            top: -15%; /* 设置顶部对齐 */
+            right: -10%; /* 设置右侧对齐 */
+            animation: swing 7s infinite ease-in-out; /* 增加动画持续时间 */
+            transform-origin: 50% 50%; /* 设置旋转中心 */
+        }
+
+        .transparent-box {
+            background-color: transparent; /* 背景透明 */
+            padding: 20px; /* 内边距 */
+            text-align: center; /* 文本居中 */
+            width: 80vw; /* 宽度设置为容器的80% */
+            height: 30vh;
+            position: relative; /* 设置为相对定位 */
+            top: -2vh;
+        }
+
+        .transparent-box img {
+            width: 40vw; /* 宽度设置 */
+            transition: opacity 1s ease-in-out; /* 添加淡入淡出过渡 */
+            opacity: 1; /* 初始不透明度 */
+        }
+        
+        .play-button {
+            position: absolute; /* 绝对定位 */
+            bottom: -24%; /* 距离底部5% */
+            right: 0%; /* 距离右边5% */
+            width: 55%; /* 按钮宽度为父元素宽度的60% */
+            height: 55%; /* 按钮高度为父元素高度的60% */
+            background-image: url('imgs/play.png'); /* 按钮背景图 */
+            background-size: contain; /* 背景适应按钮大小 */
+            background-repeat: no-repeat; /* 不重复 */
+            border: none; /* 无边框 */
+            cursor: pointer; /* 鼠标悬停时显示为手形 */
+            outline: none; /* 不显示聚焦轮廓 */
+            background-color: transparent; /* 背景透明 */
+            transition: transform 0.5s ease; /* 添加平滑过渡效果 */
+        }
+
+        /* 悬停效果 */
+        .play-button:hover {
+            transform: scale(1.1); /* 悬停时放大10% */
+        }
+
+        /* 添加新的按钮样式 */
+        .new-button {
+            position: absolute; /* 绝对定位 */
+            bottom: 0%; /* 距离底部10% */
+            right: 0%; /* 距离右边10% */
+            width: 16vw;
+            height: 16vh;
+            background-image: url('imgs/git.png'); /* 新按钮背景图 */
+            background-size: contain; /* 背景适应按钮大小 */
+            background-repeat: no-repeat; /* 不重复 */
+            border: none; /* 无边框 */
+            cursor: pointer; /* 鼠标悬停时显示为手形 */
+            outline: none; /* 不显示聚焦轮廓 */
+            background-color: transparent; /* 背景透明 */
+            transition: transform 0.5s ease; /* 添加平滑过渡效果 */
+        }
+        /* 悬停效果 */
+        .new-button:hover {
+            transform: scale(1.1); /* 悬停时放大10% */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div> <!-- 新增的背景动画层 -->
+    <div class="bg-d"></div> <!-- 添加的静态背景层，在bg-animation下面 -->
+    <div class="bg-overlay"></div> <!-- 新增的背景图层 -->
+    
+    <div class="side-container">
+        <div class="transparent-box">
+            <img id="slideshow" src="imgs/show1.png" alt="轮播图">
+        </div>
+    </div>
+    
+    <a href="https://www.baidu.com" target="_blank">
+        <button class="play-button"></button>
+    </a>
+    <<button class="new-button" onclick="window.location.href='https://gitee.com/xiao-xiaols/situation-puzzle-powered-by-llm/tree/develop';"></button>
+
+    <script>
+        const images = ['imgs/show2.png', 'imgs/show3.png', 'imgs/show1.png']; // 图片路径数组
+        let currentIndex = 0; // 当前显示的图片索引
+
+        function changeImage() {
+            const slideshow = document.getElementById('slideshow');
+            slideshow.style.opacity = 0; // 先将当前图片淡出
+
+            setTimeout(() => {
+                slideshow.src = images[currentIndex]; // 更改图片源
+                currentIndex = (currentIndex + 1) % images.length; // 更新索引，循环显示
+                slideshow.style.opacity = 1; // 然后将新图片淡入
+            }, 1000); // 与 CSS 中的过渡时间对应
+        }
+
+        setInterval(changeImage, 3000); // 每3秒更换一次图片
+    </script>
+</body>
+</html>
